@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  user-service:
+    build:
+      context: ./backend/user-service
+      dockerfile: ../../infra/Dockerfiles/Dockerfile.user-service
+    ports:
+      - "8081:8080"
+    depends_on:
+      - postgres
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../infra/Dockerfiles/Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - user-service
+
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: jobmatch
+      POSTGRES_PASSWORD: jobmatch
+      POSTGRES_DB: jobmatch
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
