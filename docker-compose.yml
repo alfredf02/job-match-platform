@@ -1,25 +1,9 @@
 version: "3.9"
+
 services:
-  user-service:
-    build:
-      context: ./backend/user-service
-      dockerfile: ../../infra/Dockerfiles/Dockerfile.user-service
-    ports:
-      - "8081:8080"
-    depends_on:
-      - postgres
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: ../infra/Dockerfiles/Dockerfile.frontend
-    ports:
-      - "3000:3000"
-    depends_on:
-      - user-service
-
   postgres:
     image: postgres:16
+    container_name: jobmatch-postgres
     environment:
       POSTGRES_USER: jobmatch
       POSTGRES_PASSWORD: jobmatch
