@@ -11,12 +11,14 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // handle form submission and call backend API
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
     setLoading(true);
 
     try {
+    // send the login request and email/password to the backend login API
       const response = await fetch("http://localhost:8081/api/auth/login", {
         method: "POST",
         headers: {
@@ -26,10 +28,12 @@ export default function LoginPage() {
       });
 
       if (!response.ok) {
+        // any non-200 response is treated as an error
         setError("Invalid credentials. Please try again.");
         return;
       }
 
+        // on successful login, redirect to dashboard
       router.push("/dashboard");
     } catch (err) {
       console.error("Login failed", err);
