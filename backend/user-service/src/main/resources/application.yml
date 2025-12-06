@@ -2,7 +2,7 @@ spring:
   application:
     name: user-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/jobmatch
+    url: jdbc:postgresql://localhost:5433/jobmatch
     username: jobmatch
     password: jobmatch
   jpa:
