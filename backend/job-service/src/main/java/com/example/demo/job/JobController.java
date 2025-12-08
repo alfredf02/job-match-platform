@@ -1,8 +1,8 @@
-package com.jobmatch.job.controller;
+package com.example.demo.job;
 
-import com.jobmatch.job.dto.JobRequest;
-import com.jobmatch.job.dto.JobResponse;
-import com.jobmatch.job.service.JobService;
+import com.example.demo.job.JobRequest;
+import com.example.demo.job.JobResponse;
+import com.example.demo.job.JobService;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;

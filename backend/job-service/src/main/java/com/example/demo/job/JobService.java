@@ -1,9 +1,9 @@
-package com.jobmatch.job.service;
+package com.example.demo.job;
 
-import com.jobmatch.job.domain.Job;
-import com.jobmatch.job.dto.JobRequest;
-import com.jobmatch.job.dto.JobResponse;
-import com.jobmatch.job.repository.JobRepository;
+import com.example.demo.job.Job;
+import com.example.demo.job.JobRequest;
+import com.example.demo.job.JobResponse;
+import com.example.demo.job.JobRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

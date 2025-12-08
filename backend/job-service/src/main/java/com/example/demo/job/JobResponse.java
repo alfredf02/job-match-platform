@@ -1,6 +1,6 @@
-package com.jobmatch.job.dto;
+package com.example.demo.job;
 
-import com.jobmatch.job.domain.Job;
+import com.example.demo.job.Job;
 import java.time.Instant;
 
 public class JobResponse {

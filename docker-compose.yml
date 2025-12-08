@@ -25,5 +25,18 @@ services:
     depends_on:
       - postgres
 
+  job-service:
+    build: ./backend/job-service
+    container_name: jobmatch-job-service
+    ports:
+      - "8082:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/jobmatch
+      SPRING_DATASOURCE_USERNAME: jobmatch
+      SPRING_DATASOURCE_PASSWORD: jobmatch
+    depends_on:
+      - postgres
+
+
 volumes:
   pgdata:

@@ -1,4 +1,4 @@
-package com.jobmatch.job.domain;
+package com.example.demo.job;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,6 +1,6 @@
-package com.jobmatch.job.repository;
+package com.example.demo.job;
 
-import com.jobmatch.job.domain.Job;
+import com.example.demo.job.Job;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface JobRepository extends JpaRepository<Job, Long> {
