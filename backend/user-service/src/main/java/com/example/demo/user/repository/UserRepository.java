@@ -1,5 +1,6 @@
-package com.example.demo.user;
+package com.example.demo.user.repository;
 
+import com.example.demo.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 // Repository interface for User entity

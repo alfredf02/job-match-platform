@@ -1,4 +1,4 @@
-package com.example.demo.user;
+package com.example.demo.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
