@@ -18,6 +18,8 @@ services:
     container_name: jobmatch-user-service
     ports:
       - "8081:8080"
+    env_file:
+      - .env.user-service
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/jobmatch
       SPRING_DATASOURCE_USERNAME: jobmatch

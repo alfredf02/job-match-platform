@@ -7,7 +7,7 @@ spring:
     password: jobmatch
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
@@ -18,3 +18,12 @@ spring:
 
 server:
   port: 8080
+
+security:
+  jwt:
+    # Replace this secret via environment variable or external config in non-local environments.
+    # Example override: SECURITY_JWT_SECRET=base64EncodedSecret
+    # secret: c29tZS1sb25nLXN1cGVyLXNlY3JldC1rZXktMTIzNDU2Nzg5MA==
+    secret: ${SECURITY_JWT_SECRET:local-dev-only-secret}
+    # Token expiration in seconds; configure per environment (e.g., shorter for staging).
+    expirationSeconds: ${SECURITY_JWT_EXPIRATIONSECONDS:3600}
