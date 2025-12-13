@@ -1,11 +1,10 @@
-// src/test/java/com/jobmatch/user/controller/AuthControllerTest.java
 package com.example.demo.user.controller;
 
-import com.example.demo.user.service.AuthService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.demo.user.dto.AuthResponse;
 import com.example.demo.user.dto.LoginRequest;
 import com.example.demo.user.dto.RegisterRequest;
+import com.example.demo.user.service.AuthService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +16,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
@@ -30,7 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AuthControllerTest {
 
     private MockMvc mockMvc;
-
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Mock
@@ -40,18 +40,32 @@ class AuthControllerTest {
     private AuthController authController;
 
     @BeforeEach
-    void setUp() {
-        // Build a standalone MockMvc instance so we don't rely on @WebMvcTest or application context.
-        this.mockMvc = MockMvcBuilders.standaloneSetup(authController).build();
+    void setup() {
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(authController)
+                .setControllerAdvice(new TestResponseStatusExceptionAdvice())
+                .build();
+    }
+
+    /**
+     * Standalone MockMvc does not always map ResponseStatusException the same way as a full Spring Boot app.
+     * This advice makes the mapping explicit for this unit-style controller test.
+     */
+    @RestControllerAdvice
+    static class TestResponseStatusExceptionAdvice {
+        @ExceptionHandler(ResponseStatusException.class)
+        public org.springframework.http.ResponseEntity<Void> handle(ResponseStatusException ex) {
+            return org.springframework.http.ResponseEntity.status(ex.getStatusCode()).build();
+        }
     }
 
     @Test
     void register_returns_201_and_body() throws Exception {
-        // arrange: stub the service to return a successful auth response
         AuthResponse response = new AuthResponse();
         response.setUserId(1L);
         response.setEmail("new@example.com");
         response.setToken("fake-jwt");
+
         when(authService.register(any(RegisterRequest.class))).thenReturn(response);
 
         RegisterRequest request = new RegisterRequest();
@@ -59,7 +73,6 @@ class AuthControllerTest {
         request.setPassword("password123");
         request.setFullName("New User");
 
-        // act/assert: perform POST and verify status + payload
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -73,7 +86,6 @@ class AuthControllerTest {
 
     @Test
     void login_invalid_credentials_returns_401() throws Exception {
-        // arrange: service throws when credentials are bad
         when(authService.login(any(LoginRequest.class)))
                 .thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials"));
 
@@ -81,7 +93,6 @@ class AuthControllerTest {
         request.setEmail("user@example.com");
         request.setPassword("wrong");
 
-        // act/assert: POST login should surface 401
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))

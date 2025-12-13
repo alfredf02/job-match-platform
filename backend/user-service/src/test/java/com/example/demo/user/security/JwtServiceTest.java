@@ -1,4 +1,3 @@
-// src/test/java/com/example/demo/user/security/JwtServiceTest.java
 package com.example.demo.user.security;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,9 +14,9 @@ class JwtServiceTest {
     @BeforeEach
     void setUp() {
         // Base64-encoded secret for signing; in real deployments this should be provided securely via env/config.
-        String secret =
-                Base64.getEncoder()
-                        .encodeToString("test-secret-key-test-secret-key".getBytes(StandardCharsets.UTF_8));
+        // Use a 32-byte value to satisfy HS256 key-strength requirements.
+        String secret = Base64.getEncoder()
+                .encodeToString("01234567890123456789012345678901".getBytes(StandardCharsets.UTF_8));
         jwtService = new JwtService(secret, 3600L);
     }
 

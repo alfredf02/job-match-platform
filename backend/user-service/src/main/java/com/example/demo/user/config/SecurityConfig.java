@@ -9,6 +9,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 @Configuration // Declares this class contains Spring Security configuration.
 @EnableWebSecurity // Enables Spring Security's web integration for the application.
 public class SecurityConfig {
