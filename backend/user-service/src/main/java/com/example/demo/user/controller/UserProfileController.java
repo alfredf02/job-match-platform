@@ -1,10 +1,10 @@
 package com.jobmatch.user.controller;
 
 import com.example.demo.user.service.UserProfileService;
-import com.jobmatch.user.dto.UpdatePreferencesRequest;
-import com.jobmatch.user.dto.UpdateProfileRequest;
-import com.jobmatch.user.dto.UserProfileResponse;
-import com.jobmatch.user.security.JwtAuthenticationFilter;
+import com.example.demo.user.dto.UpdatePreferencesRequest;
+import com.example.demo.user.dto.UpdateProfileRequest;
+import com.example.demo.user.dto.UserProfileResponse;
+import com.example.demo.user.security.JwtAuthenticationFilter;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

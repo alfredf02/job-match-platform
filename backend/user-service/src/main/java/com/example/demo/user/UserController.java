@@ -35,7 +35,7 @@ public class UserController {
     public ResponseEntity<User> createUser(@Valid @RequestBody CreateUserRequest request) { // Validate input
         User user = new User();
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setPasswordHash(request.getPassword());
         user.setFullName(request.getFullName());
 
         User savedUser = userRepository.save(user);

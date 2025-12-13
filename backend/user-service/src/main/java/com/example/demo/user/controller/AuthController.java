@@ -1,9 +1,9 @@
 package com.jobmatch.user.controller;
 
 import com.example.demo.user.service.AuthService;
-import com.jobmatch.user.dto.AuthResponse;
-import com.jobmatch.user.dto.LoginRequest;
-import com.jobmatch.user.dto.RegisterRequest;
+import com.example.demo.user.dto.AuthResponse;
+import com.example.demo.user.dto.LoginRequest;
+import com.example.demo.user.dto.RegisterRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,5 +1,5 @@
 // src/test/java/com/jobmatch/user/security/JwtAuthenticationFilterTest.java
-package com.jobmatch.user.security;
+package com.example.demo.user.security;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -8,7 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.example.demo.user.security.JwtService;
-import com.jobmatch.user.security.JwtAuthenticationFilter.JwtUserPrincipal;
+import com.example.demo.user.security.JwtAuthenticationFilter.JwtUserPrincipal;
 import jakarta.servlet.FilterChain;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

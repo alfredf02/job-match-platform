@@ -1,5 +1,5 @@
 // src/test/java/com/jobmatch/user/service/UserProfileServiceTest.java
-package com.jobmatch.user.service;
+package com.example.demo.user.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -11,9 +11,9 @@ import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserProfile;
 import com.example.demo.user.repository.UserRepository;
 import com.example.demo.user.service.UserProfileService;
-import com.jobmatch.user.dto.UpdateProfileRequest;
-import com.jobmatch.user.dto.UserProfileResponse;
-import com.jobmatch.user.repository.UserProfileRepository;
+import com.example.demo.user.dto.UpdateProfileRequest;
+import com.example.demo.user.dto.UserProfileResponse;
+import com.example.demo.user.repository.UserProfileRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
