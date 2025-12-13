@@ -1,4 +1,4 @@
-package com.jobmatch.user.controller;
+package com.example.demo.user.controller;
 
 import com.example.demo.user.service.AuthService;
 import com.example.demo.user.dto.AuthResponse;

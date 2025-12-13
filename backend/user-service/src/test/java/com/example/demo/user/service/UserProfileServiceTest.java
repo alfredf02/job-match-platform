@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserProfile;
+import com.example.demo.user.controller.UserProfileController;
 import com.example.demo.user.repository.UserRepository;
 import com.example.demo.user.service.UserProfileService;
 import com.example.demo.user.dto.UpdateProfileRequest;
