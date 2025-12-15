@@ -1,9 +1,13 @@
 package com.example.demo.job.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class JobRequest {
+
+    @NotNull(message = "Employer id is required")
+    private Long employerId;
 
     @NotBlank(message = "Title is required")
     @Size(max = 255, message = "Title must be 255 characters or less")
@@ -12,15 +16,23 @@ public class JobRequest {
     @NotBlank(message = "Description is required")
     private String description;
 
-    @NotBlank(message = "Location is required")
     private String location;
 
-    @NotBlank(message = "Employment type is required")
-    private String employmentType;
+    private String workType;
+
+    private String seniority;
 
     private Integer salaryMin;
 
     private Integer salaryMax;
+
+    public Long getEmployerId() {
+        return employerId;
+    }
+
+    public void setEmployerId(Long employerId) {
+        this.employerId = employerId;
+    }
 
     public String getTitle() {
         return title;
@@ -46,12 +58,20 @@ public class JobRequest {
         this.location = location;
     }
 
-    public String getEmploymentType() {
-        return employmentType;
+    public String getWorkType() {
+        return workType;
     }
 
-    public void setEmploymentType(String employmentType) {
-        this.employmentType = employmentType;
+    public void setWorkType(String workType) {
+        this.workType = workType;
+    }
+
+    public String getSeniority() {
+        return seniority;
+    }
+
+    public void setSeniority(String seniority) {
+        this.seniority = seniority;
     }
 
     public Integer getSalaryMin() {

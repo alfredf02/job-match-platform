@@ -1,14 +1,22 @@
 package com.example.demo.job.domain;
 
+import com.example.demo.job.domain.Employer;
+import com.example.demo.job.domain.JobSkill;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "jobs")
@@ -18,21 +26,29 @@ public class Job {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(optional = false, fetch = jakarta.persistence.FetchType.LAZY)
+    @JoinColumn(name = "employer_id", nullable = false)
+    private Employer employer;
+
     @Column(nullable = false)
     private String title;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column(nullable = false)
     private String location;
 
-    @Column(nullable = false)
-    private String employmentType;
+    private String seniority;
+
+    @Column(name = "work_type")
+    private String workType;
 
     private Integer salaryMin;
 
     private Integer salaryMax;
+
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<JobSkill> jobSkills = new ArrayList<>();
 
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
@@ -44,12 +60,14 @@ public class Job {
         // Default constructor for JPA
     }
 
-    public Job(String title, String description, String location, String employmentType,
-               Integer salaryMin, Integer salaryMax) {
+    public Job(Employer employer, String title, String description, String location, String workType,
+               String seniority, Integer salaryMin, Integer salaryMax) {
+        this.employer = employer;
         this.title = title;
         this.description = description;
         this.location = location;
-        this.employmentType = employmentType;
+        this.workType = workType;
+        this.seniority = seniority;
         this.salaryMin = salaryMin;
         this.salaryMax = salaryMax;
     }
@@ -68,6 +86,14 @@ public class Job {
 
     public Long getId() {
         return id;
+    }
+
+    public Employer getEmployer() {
+        return employer;
+    }
+
+    public void setEmployer(Employer employer) {
+        this.employer = employer;
     }
 
     public String getTitle() {
@@ -94,12 +120,20 @@ public class Job {
         this.location = location;
     }
 
-    public String getEmploymentType() {
-        return employmentType;
+    public String getSeniority() {
+        return seniority;
     }
 
-    public void setEmploymentType(String employmentType) {
-        this.employmentType = employmentType;
+    public void setSeniority(String seniority) {
+        this.seniority = seniority;
+    }
+
+    public String getWorkType() {
+        return workType;
+    }
+
+    public void setWorkType(String workType) {
+        this.workType = workType;
     }
 
     public Integer getSalaryMin() {
@@ -116,6 +150,20 @@ public class Job {
 
     public void setSalaryMax(Integer salaryMax) {
         this.salaryMax = salaryMax;
+    }
+
+    public List<JobSkill> getJobSkills() {
+        return jobSkills;
+    }
+
+    public void addJobSkill(JobSkill jobSkill) {
+        jobSkills.add(jobSkill);
+        jobSkill.setJob(this);
+    }
+
+    public void removeJobSkill(JobSkill jobSkill) {
+        jobSkills.remove(jobSkill);
+        jobSkill.setJob(null);
     }
 
     public Instant getCreatedAt() {

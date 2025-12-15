@@ -6,10 +6,12 @@ import java.time.Instant;
 public class JobResponse {
 
     private Long id;
+    private Long employerId;
     private String title;
     private String description;
     private String location;
-    private String employmentType;
+    private String workType;
+    private String seniority;
     private Integer salaryMin;
     private Integer salaryMax;
     private Instant createdAt;
@@ -17,10 +19,12 @@ public class JobResponse {
 
     public JobResponse(Job job) {
         this.id = job.getId();
+        this.employerId = job.getEmployer().getId();
         this.title = job.getTitle();
         this.description = job.getDescription();
         this.location = job.getLocation();
-        this.employmentType = job.getEmploymentType();
+        this.workType = job.getWorkType();
+        this.seniority = job.getSeniority();
         this.salaryMin = job.getSalaryMin();
         this.salaryMax = job.getSalaryMax();
         this.createdAt = job.getCreatedAt();
@@ -29,6 +33,10 @@ public class JobResponse {
 
     public Long getId() {
         return id;
+    }
+
+    public Long getEmployerId() {
+        return employerId;
     }
 
     public String getTitle() {
@@ -43,8 +51,12 @@ public class JobResponse {
         return location;
     }
 
-    public String getEmploymentType() {
-        return employmentType;
+    public String getWorkType() {
+        return workType;
+    }
+
+    public String getSeniority() {
+        return seniority;
     }
 
     public Integer getSalaryMin() {
