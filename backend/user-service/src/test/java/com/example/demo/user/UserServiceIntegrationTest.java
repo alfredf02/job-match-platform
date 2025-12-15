@@ -79,7 +79,7 @@ class UserServiceIntegrationTest {
 
         // Arrange login payload
         LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setEmail("integration@example.com");       
+        loginRequest.setEmail(testEmail);       
         loginRequest.setPassword("Password123!");
 
         // Act: call login endpoint
@@ -102,7 +102,7 @@ class UserServiceIntegrationTest {
                         get("/api/profile/me")
                                 .header("Authorization", "Bearer " + loginToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value("integration@example.com"));
+                .andExpect(jsonPath("$.email").value(testEmail));
 
         // Arrange profile update payload
         UpdateProfileRequest updateProfileRequest = new UpdateProfileRequest();

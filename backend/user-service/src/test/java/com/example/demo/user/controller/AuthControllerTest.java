@@ -26,6 +26,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @ExtendWith(MockitoExtension.class)
 class AuthControllerTest {
@@ -91,11 +92,12 @@ class AuthControllerTest {
 
         LoginRequest request = new LoginRequest();
         request.setEmail("user@example.com");
-        request.setPassword("wrong");
+        request.setPassword("wrong-password");
 
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
                 .andExpect(status().isUnauthorized());
 
         verify(authService).login(any(LoginRequest.class));
