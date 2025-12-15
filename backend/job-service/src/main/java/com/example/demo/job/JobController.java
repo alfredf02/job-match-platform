@@ -1,8 +1,8 @@
 package com.example.demo.job;
 
-import com.example.demo.job.JobRequest;
-import com.example.demo.job.JobResponse;
-import com.example.demo.job.JobService;
+import com.example.demo.job.dto.JobRequest;
+import com.example.demo.job.dto.JobResponse;
+import com.example.demo.job.service.JobService;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;

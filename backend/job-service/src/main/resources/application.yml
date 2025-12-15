@@ -5,11 +5,10 @@ spring:
     url: jdbc:postgresql://localhost:5433/jobmatch
     username: jobmatch
     password: jobmatch
-    driver-class-name: org.postgresql.Driver
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     properties:
@@ -22,6 +21,5 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration
-    baseline-on-migrate: false
 server:
   port: 8080
