@@ -1,7 +1,7 @@
 package com.example.demo.job;
 
-import com.example.demo.job.dto.JobRequest;
-import com.example.demo.job.dto.JobResponse;
+import com.example.demo.job.dto.job.CreateJobRequest;
+import com.example.demo.job.dto.job.JobResponse;
 import com.example.demo.job.service.JobService;
 import jakarta.validation.Valid;
 import java.net.URI;
@@ -34,7 +34,7 @@ public class JobController {
     }
 
     @PostMapping
-    public ResponseEntity<JobResponse> createJob(@Valid @RequestBody JobRequest request) {
+    public ResponseEntity<JobResponse> createJob(@Valid @RequestBody CreateJobRequest request) {
         JobResponse createdJob = jobService.createJob(request);
         URI location = URI.create("/api/jobs/" + createdJob.getId());
         return ResponseEntity.created(location).body(createdJob);

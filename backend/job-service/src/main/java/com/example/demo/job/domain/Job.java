@@ -5,6 +5,8 @@ import com.example.demo.job.domain.JobSkill;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -38,10 +40,12 @@ public class Job {
 
     private String location;
 
-    private String seniority;
+    @Enumerated(EnumType.STRING)
+    private Seniority seniority;
 
     @Column(name = "work_type")
-    private String workType;
+    @Enumerated(EnumType.STRING)
+    private WorkType workType;
 
     private Integer salaryMin;
 
@@ -60,8 +64,8 @@ public class Job {
         // Default constructor for JPA
     }
 
-    public Job(Employer employer, String title, String description, String location, String workType,
-               String seniority, Integer salaryMin, Integer salaryMax) {
+    public Job(Employer employer, String title, String description, String location, WorkType workType,
+               Seniority seniority, Integer salaryMin, Integer salaryMax) {
         this.employer = employer;
         this.title = title;
         this.description = description;
@@ -120,19 +124,19 @@ public class Job {
         this.location = location;
     }
 
-    public String getSeniority() {
+    public Seniority getSeniority() {
         return seniority;
     }
 
-    public void setSeniority(String seniority) {
+    public void setSeniority(Seniority seniority) {
         this.seniority = seniority;
     }
 
-    public String getWorkType() {
+    public WorkType getWorkType() {
         return workType;
     }
 
-    public void setWorkType(String workType) {
+    public void setWorkType(WorkType workType) {
         this.workType = workType;
     }
 

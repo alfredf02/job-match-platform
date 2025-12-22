@@ -1,32 +1,39 @@
-package com.example.demo.job.dto;
+package com.example.demo.job.dto.job;
 
 import com.example.demo.job.domain.Job;
+import com.example.demo.job.dto.employer.EmployerResponse;
 import java.time.Instant;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class JobResponse {
 
     private Long id;
-    private Long employerId;
+    private EmployerResponse employer;
     private String title;
     private String description;
     private String location;
-    private String workType;
-    private String seniority;
     private Integer salaryMin;
     private Integer salaryMax;
+    private String workType;
+    private String seniority;
+    private List<String> skills;
     private Instant createdAt;
     private Instant updatedAt;
 
     public JobResponse(Job job) {
         this.id = job.getId();
-        this.employerId = job.getEmployer().getId();
+        this.employer = new EmployerResponse(job.getEmployer());
         this.title = job.getTitle();
         this.description = job.getDescription();
         this.location = job.getLocation();
-        this.workType = job.getWorkType();
-        this.seniority = job.getSeniority();
         this.salaryMin = job.getSalaryMin();
         this.salaryMax = job.getSalaryMax();
+        this.workType = job.getWorkType() != null ? job.getWorkType().name() : null;
+        this.seniority = job.getSeniority() != null ? job.getSeniority().name() : null;
+        this.skills = job.getJobSkills().stream()
+                .map(skill -> skill.getSkill())
+                .collect(Collectors.toList());
         this.createdAt = job.getCreatedAt();
         this.updatedAt = job.getUpdatedAt();
     }
@@ -35,8 +42,8 @@ public class JobResponse {
         return id;
     }
 
-    public Long getEmployerId() {
-        return employerId;
+    public EmployerResponse getEmployer() {
+        return employer;
     }
 
     public String getTitle() {
@@ -51,6 +58,15 @@ public class JobResponse {
         return location;
     }
 
+
+    public Integer getSalaryMin() {
+        return salaryMin;
+    }
+
+    public Integer getSalaryMax() {
+        return salaryMax;
+    }
+
     public String getWorkType() {
         return workType;
     }
@@ -59,12 +75,8 @@ public class JobResponse {
         return seniority;
     }
 
-    public Integer getSalaryMin() {
-        return salaryMin;
-    }
-
-    public Integer getSalaryMax() {
-        return salaryMax;
+    public List<String> getSkills() {
+        return skills;
     }
 
     public Instant getCreatedAt() {

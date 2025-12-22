@@ -2,15 +2,16 @@ package com.example.demo.job.service;
 
 import com.example.demo.job.domain.Employer;
 import com.example.demo.job.domain.Job;
+import com.example.demo.job.domain.JobSkill;
+import com.example.demo.job.dto.job.CreateJobRequest;
+import com.example.demo.job.dto.job.JobResponse;
 import com.example.demo.job.repository.EmployerRepository;
 import com.example.demo.job.repository.JobRepository;
-import com.example.demo.job.dto.JobRequest;
-import com.example.demo.job.dto.JobResponse;
 import java.util.List;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.http.HttpStatus;
 
 @Service
 public class JobService {
@@ -24,9 +25,11 @@ public class JobService {
     }
 
     @Transactional
-    public JobResponse createJob(JobRequest request) {
+    public JobResponse createJob(CreateJobRequest request) {
         Employer employer = employerRepository.findById(request.getEmployerId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Employer not found"));
+
+        validateSalaryRange(request.getSalaryMin(), request.getSalaryMax());
 
         Job job = new Job(
                 employer,
@@ -39,6 +42,8 @@ public class JobService {
                 request.getSalaryMax()
         );
 
+        request.getSkills().forEach(skill -> job.addJobSkill(new JobSkill(skill)));
+
         Job savedJob = jobRepository.save(job);
         return new JobResponse(savedJob);
     }
@@ -49,5 +54,11 @@ public class JobService {
                 .stream()
                 .map(JobResponse::new)
                 .toList();
+    }
+
+    private void validateSalaryRange(Integer salaryMin, Integer salaryMax) {
+        if (salaryMin != null && salaryMax != null && salaryMin > salaryMax) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "salaryMin cannot be greater than salaryMax");
+        }
     }
 }

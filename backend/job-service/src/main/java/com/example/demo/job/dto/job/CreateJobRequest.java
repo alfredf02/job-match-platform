@@ -1,10 +1,14 @@
-package com.example.demo.job.dto;
+package com.example.demo.job.dto.job;
 
+import com.example.demo.job.domain.Seniority;
+import com.example.demo.job.domain.WorkType;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.util.List;
 
-public class JobRequest {
+public class CreateJobRequest {
 
     @NotNull(message = "Employer id is required")
     private Long employerId;
@@ -16,15 +20,21 @@ public class JobRequest {
     @NotBlank(message = "Description is required")
     private String description;
 
+    @NotBlank(message = "Location is required")
     private String location;
 
-    private String workType;
+    @NotNull(message = "Work type is required")
+    private WorkType workType;
 
-    private String seniority;
+    @NotNull(message = "Seniority is required")
+    private Seniority seniority;
 
     private Integer salaryMin;
 
     private Integer salaryMax;
+
+    @NotEmpty(message = "At least one skill is required")
+    private List<@NotBlank(message = "Skill cannot be blank") String> skills;
 
     public Long getEmployerId() {
         return employerId;
@@ -58,19 +68,19 @@ public class JobRequest {
         this.location = location;
     }
 
-    public String getWorkType() {
+    public WorkType getWorkType() {
         return workType;
     }
 
-    public void setWorkType(String workType) {
+    public void setWorkType(WorkType workType) {
         this.workType = workType;
     }
 
-    public String getSeniority() {
+    public Seniority getSeniority() {
         return seniority;
     }
 
-    public void setSeniority(String seniority) {
+    public void setSeniority(Seniority seniority) {
         this.seniority = seniority;
     }
 
@@ -88,5 +98,13 @@ public class JobRequest {
 
     public void setSalaryMax(Integer salaryMax) {
         this.salaryMax = salaryMax;
+    }
+
+    public List<String> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<String> skills) {
+        this.skills = skills;
     }
 }
