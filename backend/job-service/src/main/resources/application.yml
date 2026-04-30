@@ -23,3 +23,7 @@ spring:
     locations: classpath:db/migration
 server:
   port: 8080
+security:
+  jwt:
+    secret: ${SECURITY_JWT_SECRET:}
+    expirationSeconds: ${SECURITY_JWT_EXPIRATIONSECONDS:3600}

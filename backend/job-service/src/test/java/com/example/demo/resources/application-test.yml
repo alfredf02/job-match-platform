@@ -1,0 +1,4 @@
+security:
+  jwt:
+    secret: c29tZS1sb25nLXRlc3Qtc2VjcmV0LXNvbWUtbW9yZS1ieXRlcy0xMjM0NTY3ODkw
+    expirationSeconds: 3600
