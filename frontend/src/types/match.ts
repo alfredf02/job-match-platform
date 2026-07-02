@@ -7,3 +7,12 @@ export interface Match {
   status: string; // Status such as SUGGESTED/APPLIED
   createdAt: string; // ISO timestamp string
 }
+
+export interface JobMatch {
+  jobId: number;
+  title: string;
+  company: string;
+  score: number;
+  matchedSkills: string[];
+  missingSkills: string[];
+}

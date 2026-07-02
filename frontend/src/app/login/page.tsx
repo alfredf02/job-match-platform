@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { login } from "@/lib/api/auth";
+import { saveSession } from "@/lib/auth/session";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -18,39 +20,28 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-    // send the login request and email/password to the backend login API
-      const response = await fetch("http://localhost:8081/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) {
-        // any non-200 response is treated as an error
-        setError("Invalid credentials. Please try again.");
-        return;
-      }
-
-        // on successful login, redirect to dashboard
+      const response = await login({ email, password });
+      saveSession(response);
       router.push("/dashboard");
     } catch (err) {
-      console.error("Login failed", err);
-      setError("Unable to login at the moment. Please try again.");
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Unable to login at the moment. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md space-y-6">
+    <div className="mx-auto max-w-md rounded-xl border bg-white p-6 shadow-sm">
       <header className="space-y-2">
         <h1 className="text-2xl font-semibold">Login</h1>
         <p className="text-sm text-gray-600">Access your account to continue.</p>
       </header>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="mt-6 space-y-4">
         <div className="space-y-2">
           <label className="block text-sm font-medium" htmlFor="email">
             Email
@@ -62,7 +53,7 @@ export default function LoginPage() {
             required
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-            className="w-full rounded border px-3 py-2"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 outline-none transition focus:border-black"
             placeholder="you@example.com"
             autoComplete="email"
           />
@@ -79,24 +70,28 @@ export default function LoginPage() {
             required
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            className="w-full rounded border px-3 py-2"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 outline-none transition focus:border-black"
             placeholder="••••••••"
             autoComplete="current-password"
           />
         </div>
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && (
+          <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+            {error}
+          </p>
+        )}
 
         <button
           type="submit"
-          className="w-full rounded bg-black px-4 py-2 text-white disabled:opacity-60"
+          className="w-full rounded-md bg-black px-4 py-2 text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-60"
           disabled={loading}
         >
           {loading ? "Signing in..." : "Login"}
         </button>
       </form>
 
-      <p className="text-sm text-gray-600">
+      <p className="mt-6 text-sm text-gray-600">
         Don&apos;t have an account? <Link href="/register">Register</Link>
       </p>
     </div>

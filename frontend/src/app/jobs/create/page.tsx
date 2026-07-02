@@ -4,14 +4,25 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { createJob } from "@/lib/api/jobs";
+import { Seniority, WorkType } from "@/types/job";
+
+function parseSkills(value: string): string[] {
+  return value
+    .split(",")
+    .map((skill) => skill.trim())
+    .filter(Boolean);
+}
 
 export default function CreateJobPage() {
   const router = useRouter();
   // keep track of each field so inputs stay controlled
+  const [employerId, setEmployerId] = useState("1");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
-  const [employmentType, setEmploymentType] = useState("FULL_TIME");
+  const [workType, setWorkType] = useState<WorkType>("REMOTE");
+  const [seniority, setSeniority] = useState<Seniority>("MID");
+  const [skills, setSkills] = useState("");
   const [salaryMin, setSalaryMin] = useState<string>("");
   const [salaryMax, setSalaryMax] = useState<string>("");
   // flags for the UI state
@@ -26,10 +37,13 @@ export default function CreateJobPage() {
     try {
       // send the form data to the job-service
       await createJob({
+        employerId: Number(employerId),
         title,
         description,
         location,
-        employmentType,
+        workType,
+        seniority,
+        skills: parseSkills(skills),
         salaryMin: salaryMin ? Number(salaryMin) : undefined,
         salaryMax: salaryMax ? Number(salaryMax) : undefined,
       });
@@ -52,6 +66,23 @@ export default function CreateJobPage() {
     <div className="space-y-4">
       <h1 className="text-2xl font-semibold">Create Job</h1>
       <form className="space-y-4" onSubmit={handleSubmit}>
+        <div className="space-y-2">
+          <label className="block text-sm font-medium" htmlFor="employerId">
+            Employer ID
+          </label>
+          <input
+            className="w-full rounded border px-3 py-2"
+            id="employerId"
+            name="employerId"
+            required
+            min="1"
+            value={employerId}
+            onChange={(event) => setEmployerId(event.target.value)}
+            type="number"
+            placeholder="Employer ID"
+          />
+        </div>
+
         <div className="space-y-2">
           <label className="block text-sm font-medium" htmlFor="title">
             Title
@@ -101,20 +132,55 @@ export default function CreateJobPage() {
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium" htmlFor="employmentType">
-            Employment Type
+          <label className="block text-sm font-medium" htmlFor="workType">
+            Work Type
           </label>
           <select
             className="w-full rounded border px-3 py-2"
-            id="employmentType"
-            name="employmentType"
-            value={employmentType}
-            onChange={(event) => setEmploymentType(event.target.value)}
+            id="workType"
+            name="workType"
+            value={workType}
+            onChange={(event) => setWorkType(event.target.value as WorkType)}
           >
-            <option value="FULL_TIME">FULL_TIME</option>
-            <option value="PART_TIME">PART_TIME</option>
-            <option value="CONTRACT">CONTRACT</option>
+            <option value="REMOTE">REMOTE</option>
+            <option value="HYBRID">HYBRID</option>
+            <option value="ONSITE">ONSITE</option>
           </select>
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-sm font-medium" htmlFor="seniority">
+            Seniority
+          </label>
+          <select
+            className="w-full rounded border px-3 py-2"
+            id="seniority"
+            name="seniority"
+            value={seniority}
+            onChange={(event) => setSeniority(event.target.value as Seniority)}
+          >
+            <option value="INTERN">INTERN</option>
+            <option value="JUNIOR">JUNIOR</option>
+            <option value="MID">MID</option>
+            <option value="SENIOR">SENIOR</option>
+            <option value="LEAD">LEAD</option>
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-sm font-medium" htmlFor="skills">
+            Skills
+          </label>
+          <input
+            className="w-full rounded border px-3 py-2"
+            id="skills"
+            name="skills"
+            required
+            value={skills}
+            onChange={(event) => setSkills(event.target.value)}
+            type="text"
+            placeholder="React, TypeScript, Spring Boot"
+          />
         </div>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

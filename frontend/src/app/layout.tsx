@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
+import AppNavigation from "@/components/app-navigation";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -32,11 +33,7 @@ export default function RootLayout({
               <Link href="/" className="text-lg font-semibold">
                 Job Match Platform
               </Link>
-              <div className="flex items-center gap-4 text-sm">
-                <Link href="/login">Login</Link>
-                <Link href="/register">Register</Link>
-                <Link href="/dashboard">Dashboard</Link>
-              </div>
+              <AppNavigation />
             </div>
           </nav>
           <main className="mx-auto max-w-5xl px-4 py-8">{children}</main>

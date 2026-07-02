@@ -1,9 +1,10 @@
 "use client";
+
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { fetchJobs } from "@/lib/api/jobs";
-import { Job } from "@/types/jobs";
+import { Job } from "@/types/job";
 
 export default function JobsPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -28,7 +29,7 @@ export default function JobsPage() {
       }
     };
 
-    loadJobs();
+    void loadJobs();
   }, []);
 
   if (loading) {
@@ -56,7 +57,7 @@ export default function JobsPage() {
             <li key={job.id} className="rounded border p-3">
               <h2 className="text-lg font-medium">{job.title}</h2>
               <p className="text-sm text-gray-700">{job.location}</p>
-              <p className="text-sm text-gray-700">{job.employmentType}</p>
+              {job.workType && <p className="text-sm text-gray-700">{job.workType}</p>}
               {(job.salaryMin || job.salaryMax) && (
                 <p className="text-sm text-gray-700">
                   Salary: {job.salaryMin ? `$${job.salaryMin}` : ""}
