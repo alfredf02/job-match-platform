@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -7,6 +8,33 @@ import {
   getSessionSnapshot,
   subscribeToSession,
 } from "@/lib/auth/session";
+
+const dashboardLinks = [
+  {
+    title: "Profile",
+    description: "Update your details, skills, salary range, and role preferences.",
+    href: "/profile",
+    cta: "Manage Profile",
+  },
+  {
+    title: "Recommended Jobs",
+    description: "Review explainable job matches based on your current profile.",
+    href: "/recommendations",
+    cta: "View Recommendations",
+  },
+  {
+    title: "Employer Jobs",
+    description: "Create and manage employer postings when you are hiring.",
+    href: "/employer/jobs",
+    cta: "Manage Employer Jobs",
+  },
+  {
+    title: "Browse Jobs",
+    description: "Explore the public job catalogue and current search filters.",
+    href: "/jobs",
+    cta: "Browse Jobs",
+  },
+];
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -29,31 +57,33 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-6 rounded-xl border bg-white p-6 shadow-sm">
-      <div className="space-y-2">
-        <h1 className="text-2xl font-semibold">Dashboard</h1>
-        <p className="text-sm text-gray-700">
-          Welcome back{userId ? `, user ${userId}` : ""}. Your account is ready
-          for the next milestone.
-        </p>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2">
-        <div className="rounded-lg border border-gray-200 p-4">
-          <h2 className="text-sm font-semibold text-black">Profile</h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Profile management will be connected in a later milestone.
+    <div className="mx-auto max-w-5xl space-y-6">
+      <section className="rounded-xl border bg-white p-6 shadow-sm">
+        <div className="space-y-2">
+          <h1 className="text-2xl font-semibold">Dashboard</h1>
+          <p className="text-sm text-gray-700">
+            Welcome back{userId ? `, user ${userId}` : ""}. Choose the next step for your
+            candidate or employer workflow.
           </p>
         </div>
+      </section>
 
-        <div className="rounded-lg border border-gray-200 p-4">
-          <h2 className="text-sm font-semibold text-black">Jobs and Matches</h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Use the navigation above to move into recommended jobs, employer
-            jobs, or job creation flows.
-          </p>
-        </div>
-      </div>
+      <section className="grid gap-4 md:grid-cols-2">
+        {dashboardLinks.map((card) => (
+          <div key={card.href} className="rounded-xl border bg-white p-6 shadow-sm">
+            <div className="space-y-3">
+              <h2 className="text-lg font-semibold text-black">{card.title}</h2>
+              <p className="text-sm text-gray-600">{card.description}</p>
+              <Link
+                href={card.href}
+                className="inline-flex rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 transition hover:border-black hover:text-black"
+              >
+                {card.cta}
+              </Link>
+            </div>
+          </div>
+        ))}
+      </section>
     </div>
   );
 }

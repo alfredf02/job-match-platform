@@ -1,65 +1,77 @@
-import Image from "next/image";
+import Link from "next/link";
+
+const featureCards = [
+  {
+    title: "Candidate Flow",
+    description:
+      "Register, sign in, maintain your profile, and review explainable job recommendations.",
+    href: "/register",
+    cta: "Create Account",
+  },
+  {
+    title: "Employer Flow",
+    description:
+      "Set up an employer record, publish roles, and manage job postings from one place.",
+    href: "/employer",
+    cta: "Employer Setup",
+  },
+  {
+    title: "Public Jobs",
+    description:
+      "Browse the current role catalogue with simple search filters powered by the job service.",
+    href: "/jobs",
+    cta: "Browse Jobs",
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="mx-auto max-w-5xl space-y-8">
+      <section className="rounded-2xl border bg-white p-8 shadow-sm">
+        <div className="max-w-3xl space-y-4">
+          <p className="text-sm font-medium uppercase tracking-[0.2em] text-gray-500">
+            Job Match Platform
           </p>
+          <h1 className="text-4xl font-semibold tracking-tight text-black sm:text-5xl">
+            Connect candidate profiles to relevant roles with a clean MVP workflow.
+          </h1>
+          <p className="text-base text-gray-600 sm:text-lg">
+            This frontend integrates the completed user, job, and matching services with a
+            simple candidate journey and a lightweight employer job management flow.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/register"
+              className="inline-flex rounded-md bg-black px-4 py-2 text-sm text-white transition hover:bg-gray-800"
+            >
+              Get Started
+            </Link>
+            <Link
+              href="/jobs"
+              className="inline-flex rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 transition hover:border-black hover:text-black"
+            >
+              Browse Jobs
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </section>
+
+      <section className="grid gap-4 md:grid-cols-3">
+        {featureCards.map((card) => (
+          <div key={card.title} className="rounded-xl border bg-white p-6 shadow-sm">
+            <div className="space-y-3">
+              <h2 className="text-lg font-semibold text-black">{card.title}</h2>
+              <p className="text-sm text-gray-600">{card.description}</p>
+              <Link
+                href={card.href}
+                className="inline-flex rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 transition hover:border-black hover:text-black"
+              >
+                {card.cta}
+              </Link>
+            </div>
+          </div>
+        ))}
+      </section>
     </div>
   );
 }

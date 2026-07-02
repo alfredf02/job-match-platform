@@ -9,44 +9,12 @@ import {
   getSessionSnapshot,
   subscribeToSession,
 } from "@/lib/auth/session";
+import {
+  getEmployerIdServerSnapshot,
+  getEmployerIdSnapshot,
+  subscribeToEmployerId,
+} from "@/lib/employer/storage";
 import { Seniority, WorkType } from "@/types/job";
-
-const EMPLOYER_STORAGE_KEY = "job-match-platform.employerId";
-const EMPLOYER_CHANGE_EVENT = "job-match-platform:employer-change";
-
-function isBrowser(): boolean {
-  return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
-}
-
-function subscribeToEmployerId(listener: () => void): () => void {
-  if (!isBrowser()) {
-    return () => undefined;
-  }
-
-  const handleChange = () => {
-    listener();
-  };
-
-  window.addEventListener(EMPLOYER_CHANGE_EVENT, handleChange);
-  window.addEventListener("storage", handleChange);
-
-  return () => {
-    window.removeEventListener(EMPLOYER_CHANGE_EVENT, handleChange);
-    window.removeEventListener("storage", handleChange);
-  };
-}
-
-function getEmployerIdSnapshot(): string | null {
-  if (!isBrowser()) {
-    return null;
-  }
-
-  return window.localStorage.getItem(EMPLOYER_STORAGE_KEY);
-}
-
-function getEmployerIdServerSnapshot(): string | null {
-  return null;
-}
 
 function parseSkills(value: string): string[] {
   return value
@@ -165,11 +133,19 @@ export default function NewEmployerJobPage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <header className="space-y-2">
-        <h1 className="text-2xl font-semibold">New Job Posting</h1>
-        <p className="text-sm text-gray-600">
-          Create a job posting for employer ID {storedEmployerId}.
-        </p>
+      <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div className="space-y-2">
+          <h1 className="text-2xl font-semibold">New Job Posting</h1>
+          <p className="text-sm text-gray-600">
+            Create a job posting for employer ID {storedEmployerId}.
+          </p>
+        </div>
+        <Link
+          href="/employer/jobs"
+          className="inline-flex rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 transition hover:border-black hover:text-black"
+        >
+          Back to Employer Jobs
+        </Link>
       </header>
 
       <section className="rounded-xl border bg-white p-6 shadow-sm">

@@ -15,7 +15,7 @@ function formatScore(score: number): string {
   return `${Math.round(percentage)}%`;
 }
 
-export default function MatchesPage() {
+export default function RecommendationsPage() {
   const router = useRouter();
   const session = useSyncExternalStore(
     subscribeToSession,
@@ -26,7 +26,7 @@ export default function MatchesPage() {
   const userId = session?.userId ?? null;
 
   const [matches, setMatches] = useState<JobMatch[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -37,14 +37,14 @@ export default function MatchesPage() {
 
     if (!userId) {
       setError("Your session does not include a user ID. Please log in again.");
-      setLoading(false);
+      setIsLoading(false);
       return;
     }
 
     let isCancelled = false;
 
-    const loadMatches = async () => {
-      setLoading(true);
+    const loadRecommendations = async () => {
+      setIsLoading(true);
       setError(null);
 
       try {
@@ -58,17 +58,17 @@ export default function MatchesPage() {
           setError(
             err instanceof Error
               ? err.message
-              : "Failed to load matches.",
+              : "Unable to load recommended jobs right now. Please try again.",
           );
         }
       } finally {
         if (!isCancelled) {
-          setLoading(false);
+          setIsLoading(false);
         }
       }
     };
 
-    void loadMatches();
+    void loadRecommendations();
 
     return () => {
       isCancelled = true;
@@ -82,17 +82,14 @@ export default function MatchesPage() {
   return (
     <div className="mx-auto max-w-4xl space-y-6">
       <header className="space-y-2">
-        <h1 className="text-2xl font-semibold">Your Matches</h1>
+        <h1 className="text-2xl font-semibold">Recommended Jobs</h1>
         <p className="text-sm text-gray-600">
-          Review explainable job matches based on your current profile and preferences.
+          These roles are ordered by explainable matching against your current
+          profile and preferences.
         </p>
       </header>
 
-      {loading && (
-        <section className="rounded-xl border bg-white p-6 shadow-sm">
-          <p className="text-sm text-gray-600">Loading matches...</p>
-        </section>
-      )}
+      {isLoading && <p className="text-sm text-gray-600">Loading recommendations...</p>}
 
       {error && (
         <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
@@ -100,13 +97,13 @@ export default function MatchesPage() {
         </p>
       )}
 
-      {!loading && !error && matches.length === 0 && (
+      {!isLoading && !error && matches.length === 0 && (
         <section className="rounded-xl border bg-white p-6 shadow-sm">
-          <p className="text-sm text-gray-700">No matches found yet.</p>
+          <p className="text-sm text-gray-700">No recommended jobs are available yet.</p>
         </section>
       )}
 
-      {!loading && !error && matches.length > 0 && (
+      {!isLoading && !error && matches.length > 0 && (
         <div className="space-y-4">
           {matches.map((match) => (
             <section key={match.jobId} className="rounded-xl border bg-white p-6 shadow-sm">
@@ -123,13 +120,13 @@ export default function MatchesPage() {
 
                 <div className="space-y-2 text-sm text-gray-600">
                   <p>
-                    Matched Skills: {" "}
+                    Matched Skills:{" "}
                     {match.matchedSkills.length > 0
                       ? match.matchedSkills.join(", ")
                       : "None"}
                   </p>
                   <p>
-                    Missing Skills: {" "}
+                    Missing Skills:{" "}
                     {match.missingSkills.length > 0
                       ? match.missingSkills.join(", ")
                       : "None"}

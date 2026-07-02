@@ -9,44 +9,12 @@ import {
   getSessionSnapshot,
   subscribeToSession,
 } from "@/lib/auth/session";
+import {
+  getEmployerIdServerSnapshot,
+  getEmployerIdSnapshot,
+  subscribeToEmployerId,
+} from "@/lib/employer/storage";
 import { Job } from "@/types/job";
-
-const EMPLOYER_STORAGE_KEY = "job-match-platform.employerId";
-const EMPLOYER_CHANGE_EVENT = "job-match-platform:employer-change";
-
-function isBrowser(): boolean {
-  return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
-}
-
-function subscribeToEmployerId(listener: () => void): () => void {
-  if (!isBrowser()) {
-    return () => undefined;
-  }
-
-  const handleChange = () => {
-    listener();
-  };
-
-  window.addEventListener(EMPLOYER_CHANGE_EVENT, handleChange);
-  window.addEventListener("storage", handleChange);
-
-  return () => {
-    window.removeEventListener(EMPLOYER_CHANGE_EVENT, handleChange);
-    window.removeEventListener("storage", handleChange);
-  };
-}
-
-function getEmployerIdSnapshot(): string | null {
-  if (!isBrowser()) {
-    return null;
-  }
-
-  return window.localStorage.getItem(EMPLOYER_STORAGE_KEY);
-}
-
-function getEmployerIdServerSnapshot(): string | null {
-  return null;
-}
 
 function formatSalaryRange(job: Job): string | null {
   if (!job.salaryMin && !job.salaryMax) {
@@ -210,7 +178,9 @@ export default function EmployerJobsPage() {
       )}
 
       {isLoading ? (
-        <p className="text-sm text-gray-600">Loading employer jobs...</p>
+        <section className="rounded-xl border bg-white p-6 shadow-sm">
+          <p className="text-sm text-gray-600">Loading employer jobs...</p>
+        </section>
       ) : jobs.length === 0 ? (
         <section className="rounded-xl border bg-white p-6 shadow-sm">
           <p className="text-sm text-gray-700">No job postings found yet.</p>

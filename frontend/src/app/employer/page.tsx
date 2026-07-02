@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { FormEvent, useEffect, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { createEmployer } from "@/lib/api/jobs";
@@ -8,52 +9,12 @@ import {
   getSessionSnapshot,
   subscribeToSession,
 } from "@/lib/auth/session";
-
-const EMPLOYER_STORAGE_KEY = "job-match-platform.employerId";
-const EMPLOYER_CHANGE_EVENT = "job-match-platform:employer-change";
-
-function isBrowser(): boolean {
-  return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
-}
-
-function subscribeToEmployerId(listener: () => void): () => void {
-  if (!isBrowser()) {
-    return () => undefined;
-  }
-
-  const handleChange = () => {
-    listener();
-  };
-
-  window.addEventListener(EMPLOYER_CHANGE_EVENT, handleChange);
-  window.addEventListener("storage", handleChange);
-
-  return () => {
-    window.removeEventListener(EMPLOYER_CHANGE_EVENT, handleChange);
-    window.removeEventListener("storage", handleChange);
-  };
-}
-
-function getEmployerIdSnapshot(): string | null {
-  if (!isBrowser()) {
-    return null;
-  }
-
-  return window.localStorage.getItem(EMPLOYER_STORAGE_KEY);
-}
-
-function getEmployerIdServerSnapshot(): string | null {
-  return null;
-}
-
-function saveEmployerId(employerId: number): void {
-  if (!isBrowser()) {
-    return;
-  }
-
-  window.localStorage.setItem(EMPLOYER_STORAGE_KEY, String(employerId));
-  window.dispatchEvent(new Event(EMPLOYER_CHANGE_EVENT));
-}
+import {
+  getEmployerIdServerSnapshot,
+  getEmployerIdSnapshot,
+  saveEmployerId,
+  subscribeToEmployerId,
+} from "@/lib/employer/storage";
 
 export default function EmployerPage() {
   const router = useRouter();
@@ -124,12 +85,24 @@ export default function EmployerPage() {
       </header>
 
       <section className="rounded-xl border bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold">Current Employer</h2>
-        <p className="mt-2 text-sm text-gray-600">
-          {storedEmployerId
-            ? `Stored employer ID for this browser: ${storedEmployerId}`
-            : "No employer ID is currently stored for this browser."}
-        </p>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="text-lg font-semibold">Current Employer</h2>
+            <p className="mt-2 text-sm text-gray-600">
+              {storedEmployerId
+                ? `Stored employer ID for this browser: ${storedEmployerId}`
+                : "No employer ID is currently stored for this browser."}
+            </p>
+          </div>
+          {storedEmployerId && (
+            <Link
+              href="/employer/jobs"
+              className="inline-flex rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 transition hover:border-black hover:text-black"
+            >
+              View Employer Jobs
+            </Link>
+          )}
+        </div>
       </section>
 
       <section className="rounded-xl border bg-white p-6 shadow-sm">
